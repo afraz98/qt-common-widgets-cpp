@@ -14,25 +14,11 @@ public:
 
     ~DetachedTab();
 
+    class WindowDropFilter;
+
     QWidget* contentWidget;
 
     QIcon windowIcon;
-
-    class WindowDropFilter : public QObject {
-        Q_OBJECT
-    public:
-        WindowDropFilter(DetachedTab* parent);
-        QEvent::Type lastEventType;
-
-    signals:
-        void onDropSignal(const QPoint& dropPos);
-
-    protected:
-        bool eventFilter(QObject* obj, QEvent* event) override;
-
-    private:
-        DetachedTab* parentTab;
-    };
 
     WindowDropFilter* windowDropFilter;
 
@@ -50,9 +36,26 @@ protected:
 private:
     QString tabName;
 
+};
 
-private slots:
+
+class DetachedTab::WindowDropFilter : public QObject {
+    Q_OBJECT
+public:
+    WindowDropFilter(DetachedTab* parent);
+    QEvent::Type lastEventType;
+
+public slots:
     void windowDropSlot(const QPoint& dropPos);
+
+signals:
+    void onDropSignal(const QPoint& dropPos);
+
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
+private:
+    DetachedTab* parentTab;
 };
 
 #endif // DETACHEDTAB_H

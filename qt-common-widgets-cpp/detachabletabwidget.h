@@ -21,34 +21,7 @@ public:
     void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
-    class TabBar : public QTabBar {
-        Q_OBJECT
-    public:
-        TabBar(DetachableTabWidget* parent);
-
-        ~TabBar();
-
-        void dragEnterEvent(QDragEnterEvent* event) override;
-        void dropEvent(QDropEvent* event) override;
-        void mouseMoveEvent(QMouseEvent* event) override;
-        void mousePressEvent(QMouseEvent* event) override;
-
-    signals:
-        void onDetachTabSignal(int index, const QPoint& pos);
-        void onMoveTabSignal(int fromIndex, int toIndex);
-        void detachedTabDropSignal(const QString& name, int index, const QPoint& dropPos);
-
-    private:
-        DetachableTabWidget* parentTabWidget;
-        QPoint dragStartPosition;
-        QPoint dragDropPosition;
-        bool dragInitiated;
-        QCursor mouseCursor;
-
-    private slots:
-        void detachedTabDrop(const QString& name, const QPoint& dropPos);
-    };
-
+    class TabBar;
     TabBar* tabBar;
     QHash<QString, DetachedTab*> detachedTabs;
 
@@ -60,6 +33,36 @@ private slots:
     void attachTab(QWidget* contentWidget, const QString& name, const QIcon& icon, int insertAt = -1);
     void removeTabByName(const QString& name);
     void detachedTabDrop(const QString& name, int index, const QPoint& dropPos);
+};
+
+
+class DetachableTabWidget::TabBar : public QTabBar {
+    Q_OBJECT
+public:
+    TabBar(DetachableTabWidget* parent);
+
+    ~TabBar();
+
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
+
+signals:
+    void onDetachTabSignal(int index, const QPoint& pos);
+    void onMoveTabSignal(int fromIndex, int toIndex);
+    void detachedTabDropSignal(const QString& name, int index, const QPoint& dropPos);
+
+private:
+    DetachableTabWidget* parentTabWidget;
+    QPoint dragStartPosition;
+    QPoint dragDropPosition;
+    bool dragInitiated;
+    QCursor mouseCursor;
+
+private slots:
+    void detachedTabDrop(const QString& name, const QPoint& dropPos);
 };
 
 

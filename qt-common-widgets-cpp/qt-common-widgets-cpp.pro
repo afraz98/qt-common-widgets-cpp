@@ -13,13 +13,11 @@ SOURCES += \
     detachedtab.cpp \
     detachedtabwidget.cpp \
     main.cpp
-    window.cpp
 
 HEADERS += \
     detachabletabwidget.h \
     detachedtab.h \
     detachedtabwidget.h \
-    window.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

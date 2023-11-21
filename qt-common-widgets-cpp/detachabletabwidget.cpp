@@ -24,9 +24,11 @@ DetachableTabWidget::DetachableTabWidget(QWidget* parent) : QTabWidget(parent), 
     connect(qApp, &QCoreApplication::aboutToQuit, this, &DetachableTabWidget::closeDetachedTabs);
 }
 
-//void DetachableTabWidget::mouseDoubleClickEvent(QMouseEvent* event) {
-//    tabBar->mouseDoubleClickEvent(event);
-//}
+DetachableTabWidget::~DetachableTabWidget(){}
+
+void DetachableTabWidget::mouseDoubleClickEvent(QMouseEvent* event) {
+    tabBar->mouseDoubleClickEvent(event);
+}
 
 void DetachableTabWidget::mousePressEvent(QMouseEvent* event) {
     tabBar->mousePressEvent(event);
@@ -37,6 +39,13 @@ void DetachableTabWidget::mouseMoveEvent(QMouseEvent* event) {
 }
 
 DetachableTabWidget::TabBar::TabBar(DetachableTabWidget* parent) : QTabBar(parent), parentTabWidget(parent), dragStartPosition(QPoint()), dragDropPosition(QPoint()), dragInitiated(false), mouseCursor() {}
+
+DetachableTabWidget::TabBar::~TabBar(){}
+
+void DetachableTabWidget::TabBar::mouseDoubleClickEvent(QMouseEvent* event){
+    event->accept();
+    emit onDetachTabSignal(tabAt(event->pos()), QCursor::pos());
+}
 
 void DetachableTabWidget::TabBar::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {

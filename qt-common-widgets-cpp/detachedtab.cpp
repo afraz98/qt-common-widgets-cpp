@@ -11,7 +11,8 @@ DetachedTab::DetachedTab(const QString& name, QWidget* contentWidget, Detachable
 
     windowDropFilter = new WindowDropFilter(this);
     installEventFilter(windowDropFilter);
-    connect(windowDropFilter, &WindowDropFilter::onDropSignal, this, &DetachedTab::windowDropSlot);
+    connect(windowDropFilter, &WindowDropFilter::onDropSignal,
+            windowDropFilter, &WindowDropFilter::windowDropSlot);
     connect(this, &DetachedTab::onCloseSignal, this, &DetachedTab::onCloseSlot);
 }
 
@@ -53,4 +54,8 @@ bool DetachedTab::WindowDropFilter::eventFilter(QObject* obj, QEvent* event) {
         lastEventType = event->type();
         return false;
     }
+}
+
+void DetachedTab::WindowDropFilter::windowDropSlot(const QPoint& dropPos) {
+    emit onDropSignal(dropPos);
 }
