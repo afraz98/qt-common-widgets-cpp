@@ -9,20 +9,17 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    detachabletabbar.cpp \
     detachabletabwidget.cpp \
+    detachedtab.cpp \
     detachedtabwidget.cpp \
-    main.cpp \
+    main.cpp
     window.cpp
 
 HEADERS += \
-    detachabletabbar.h \
     detachabletabwidget.h \
+    detachedtab.h \
     detachedtabwidget.h \
     window.h
-
-FORMS += \
-    window.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
